@@ -1,2 +1,6 @@
-/README.html
-/d/*.html
+/GNUmakefile
+/*.html
+/t/*.err
+/t/*.orig
+/theresa
+/theresa-*
