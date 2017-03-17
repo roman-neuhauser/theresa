@@ -22,4 +22,7 @@ Examples
 
 ::
 
-  $ theresa chardev /dev/zero --owned-by root --in-group wheel --mode 666
+  $ theresa chardev /dev/zero \
+    --owned-by root \
+    --in-group wheel \
+    --mode 666

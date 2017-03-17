@@ -23,7 +23,7 @@ Introduction
 ============
 
 `theresa` offers a unified language for `exec(3)`_-centric infrastracture tests.
-Tests using `theresa` are just shell command lines.  You can start small and easy.
+Tests using `theresa` are just command lines.  You can start small and easy.
 
 .. warning::
 
@@ -39,14 +39,19 @@ Tests using `theresa` are just shell command lines.  You can start small and eas
 .. .. _Rspec: http://rspec.info/
 
 
-Things and Attributes
-=====================
+Things and their Attributes
+===========================
+
+Each `theresa` invocation asserts one or more truths about a single
+"`thing`":
 
 * blockdev_
 * chardev_
 * dir_
 * file_
+* group_
 * mountpoint_
+* netif_
 * pipe_
 * symlink_
 * user_
@@ -55,7 +60,9 @@ Things and Attributes
 .. _chardev: d/chardev.rst
 .. _dir: d/dir.rst
 .. _file: d/file.rst
+.. _group: d/group.rst
 .. _mountpoint: d/mountpoint.rst
+.. _netif: d/netif.rst
 .. _pipe: d/pipe.rst
 .. _symlink: d/symlink.rst
 .. _user: d/user.rst
