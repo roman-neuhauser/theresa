@@ -22,6 +22,7 @@ types += dir
 types += file
 types += group
 types += mountpoint
+types += netif
 types += pipe
 types += symlink
 types += user

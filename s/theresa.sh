@@ -15,6 +15,7 @@ dir)        theresa-"$cmd" "$@" ;;
 file)       theresa-"$cmd" "$@" ;;
 group)      theresa-"$cmd" "$@" ;;
 mountpoint) theresa-"$cmd" "$@" ;;
+netif)      theresa-"$cmd" "$@" ;;
 pipe)       theresa-"$cmd" "$@" ;;
 socket)     theresa-"$cmd" "$@" ;;
 symlink)    theresa-"$cmd" "$@" ;;
