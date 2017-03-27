@@ -5,4 +5,5 @@
 
 does it exist at all? ::
 
-  $ theresa user fubar
+  $ theresa group fubar
+  FAIL: group fubar does not exist

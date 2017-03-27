@@ -13,6 +13,7 @@ blockdev)   theresa-"$cmd" "$@" ;;
 chardev)    theresa-"$cmd" "$@" ;;
 dir)        theresa-"$cmd" "$@" ;;
 file)       theresa-"$cmd" "$@" ;;
+group)      theresa-"$cmd" "$@" ;;
 mountpoint) theresa-"$cmd" "$@" ;;
 pipe)       theresa-"$cmd" "$@" ;;
 socket)     theresa-"$cmd" "$@" ;;

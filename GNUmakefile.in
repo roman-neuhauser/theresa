@@ -20,6 +20,7 @@ types += blockdev
 types += chardev
 types += dir
 types += file
+types += group
 types += mountpoint
 types += pipe
 types += symlink
