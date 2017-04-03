@@ -2,5 +2,6 @@
 /*.html
 /t/*.err
 /t/*.orig
+/prelude
 /theresa
 /theresa-*

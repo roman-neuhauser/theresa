@@ -41,6 +41,7 @@ populate() # {{{
     -e "s@bindir@$bindirg" \
     -e "s@datarootdir@$datarootdirg" \
     -e "s@mandir@$mandirg" \
+    -e "s@preludedir@$preludedirg" \
     -e "s@HAVEOPT_SH@$HAVEOPT_SHg" \
     -e "s@ZSH@$ZSHg" \
     $1 \
@@ -54,6 +55,7 @@ bindir='${prefix}/bin'
 datarootdir='${prefix}/share'
 mandir='${datarootdir}/man'
 mandir_set=0
+preludedir='${datarootdir}/theresa'
 
 for a in "$@"; do
   case $a in
@@ -64,6 +66,7 @@ for a in "$@"; do
     mandir_set=1
   ;;
   --prefix=*)       prefix="${a#*=}"      ;;
+  --preludedir=*)   preludedir="${a#*=}"  ;;
 
   HAVEOPT_SH=*)
     HAVEOPT_SH="${a#*=}"

@@ -3,6 +3,8 @@ bindir = @bindir@
 mandir = @mandir@
 man1dir = $(mandir)/man1
 
+preludedir  = @preludedir@
+
 HAVEOPT_SH  = @HAVEOPT_SH@
 ZSH         = @ZSH@
 
@@ -37,7 +39,7 @@ html = $(addsuffix .html,$(types))
 tools = $(addprefix theresa-,$(types))
 
 .PHONY: all
-all: theresa $(tools)
+all: theresa $(tools) prelude
 
 
 .PHONY: html
@@ -48,7 +50,7 @@ $(html): %.html: $(sdocdir)/%.rst
 
 .PHONY: clean
 clean:
-	$(RM) theresa $(tools) $(html) $(testdir)/*.err
+	$(RM) theresa $(tools) prelude $(html) $(testdir)/*.err
 
 
 .PHONY: check
@@ -60,11 +62,13 @@ check: all
 install: all | installdirs
 	install -m 0755 theresa $(DESTDIR)$(bindir)
 	install -m 0644 theresa.1 $(DESTDIR)$(man1dir)
+	install -m 0644 prelude $(DESTDIR)$(preludedir)
 
 .PHONY: installdirs
 installdirs:
 	mkdir -p $(DESTDIR)$(bindir)
 	mkdir -p $(DESTDIR)$(man1dir)
+	mkdir -p $(DESTDIR)$(preludedir)
 
 
 
@@ -77,8 +81,14 @@ theresa.1: $(smandir)/theresa.1.in
 $(tools): theresa-%: s/theresa/%.sh
 	$(call subst_vars,$@,$<)
 
+prelude: $(srcdir)/theresa/prelude.sh
+	sed \
+		-e "s![@]HAVEOPT_SH[@]!$(HAVEOPT_SH)!g" \
+		< $< > $@
+
 define subst_vars
 	sed \
+		-e 's![@]preludedir[@]!$(preludedir)!g' \
 		-e "s![@]HAVEOPT_SH[@]!$(HAVEOPT_SH)!g" \
 		-e "s![@]ZSH[@]!$(ZSH)!g" \
 		< $2 > $1

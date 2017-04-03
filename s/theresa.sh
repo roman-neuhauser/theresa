@@ -1,9 +1,11 @@
 #!@ZSH@ -f
 # vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
-SELF="${0##*/}"
+declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
-. haveopt.sh
+. $preludedir/prelude || exit 2
+
+SELF="${0##*/}"
 
 usage() # {{{
 {

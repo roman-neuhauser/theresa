@@ -1,22 +1,8 @@
 #!@ZSH@ -f
 
-setopt no_rcs
-setopt c_bases
-setopt octal_zeroes
-setopt extended_glob
-setopt null_glob
-setopt hist_subst_pattern
-setopt pipe_fail
-setopt err_return
-setopt no_unset
-setopt warn_create_global
+declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
-. haveopt.sh
-
-function fail
-{
-  printf >&2 -- "FAIL: %s\n" "$*"
-}
+. $preludedir/prelude || exit 2
 
 while haveopt I N A h help -- "$@"; do
   :
