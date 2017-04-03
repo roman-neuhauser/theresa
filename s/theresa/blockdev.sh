@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!@ZSH@ -f
 
 #. @PRELUDEDIR@/theresa.prelude
 

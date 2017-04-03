@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!@ZSH@ -f
 # vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 SELF="${0##*/}"

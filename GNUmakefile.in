@@ -3,6 +3,9 @@ bindir = @bindir@
 mandir = @mandir@
 man1dir = $(mandir)/man1
 
+HAVEOPT_SH  = @HAVEOPT_SH@
+ZSH         = @ZSH@
+
 tests = $(testdir)/*.t
 
 sdocdir = d
@@ -45,7 +48,7 @@ $(html): %.html: $(sdocdir)/%.rst
 
 .PHONY: clean
 clean:
-	$(RM) $(html) $(testdir)/*.err
+	$(RM) theresa $(tools) $(html) $(testdir)/*.err
 
 
 .PHONY: check
@@ -66,10 +69,18 @@ installdirs:
 
 
 theresa: $(srcdir)/theresa.sh
-	install -m 755 $< $@
+	$(call subst_vars,$@,$<)
 
 theresa.1: $(smandir)/theresa.1.in
 	cp $< $@
 
 $(tools): theresa-%: s/theresa/%.sh
-	install -m 755 $< $@
+	$(call subst_vars,$@,$<)
+
+define subst_vars
+	sed \
+		-e "s![@]HAVEOPT_SH[@]!$(HAVEOPT_SH)!g" \
+		-e "s![@]ZSH[@]!$(ZSH)!g" \
+		< $2 > $1
+	chmod 0755 $1
+endef

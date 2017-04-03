@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!@ZSH@ -f
 
 setopt no_rcs
 setopt c_bases
