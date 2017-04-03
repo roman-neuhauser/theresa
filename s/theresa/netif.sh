@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 
 setopt no_rcs
+setopt c_bases
+setopt octal_zeroes
 setopt extended_glob
 setopt null_glob
 setopt hist_subst_pattern
