@@ -1,2 +1,28 @@
 export PATH="$BUILDDIR:$PATH"
-export THERESA_PRELUDEDIR="$BUILDDIR"
+export THERESA_PRELUDEDIR="$TESTDIR"
+
+mkzstat()
+{
+  local tag=
+  while [ $# -gt 0 ]; do
+    [ "$1" != -- ] || break
+    local cksum=$(printf -- "%s" "$1" | cksum)
+    local h="${cksum%% *}"
+    tag="$tag$h-"
+    shift
+  done
+  tag=${tag%-}
+  [ "$1" == -- ]
+  shift
+  local retval=0 optname=
+  local OPTIND=1
+  while getopts x: optname; do
+    case $optname in
+    x) retval=$OPTARG ;;
+    esac
+  done; shift $(( OPTIND - 1 ))
+  {
+    printf -- "%s\n" "$*"
+    printf -- "%s\n" "$retval"
+  } > .zstat-"$tag"
+}

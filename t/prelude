@@ -1,0 +1,24 @@
+# vim: ft=zsh sw=2 sts=2 et fdm=marker cms=\ #\ %s
+
+. "$BUILDDIR/prelude"
+
+[[ -z ${fake_zstat-} ]] ||
+function zstat
+{
+  local optname= rvar= tag=
+  while getopts H:Lo optname; do
+  case $optname in
+  H) rvar=$OPTARG ;;
+  esac
+  done
+  while (( $# > 0 )); do
+    local cksum=$(printf -- "%s" "$1" | cksum)
+    local h="${cksum%% *}"
+    tag="$tag$h-"
+    [[ "$1" != -- ]] || break
+    shift
+  done
+  tag=${tag%-}
+  eval "$rvar=($(head -1 ".zstat-$tag"))"
+  eval return $(sed -n 2p ".zstat-$tag")
+}

@@ -1,18 +1,12 @@
 ::
 
   $ . $TESTDIR/setup
-  $ export FAKE_BINDIR=$(mktemp -d)
-  $ export PATH="$FAKE_BINDIR:$PATH"
-  $ export FAKE_TEST=y
 
-  $ fake -bc test <<\EOF
-  > #!/bin/sh
-  > builtin test "$@"
-  > EOF
+  $ export fake_zstat=1
 
-  $ fake -x 0 test -e fubar
-  $ fake -x 0 test -b fubar
-  $ fake -x 1 test -b snafu
+  $ mkzstat -oLH st fubar -- mode 060640
+  $ mkzstat -oLH st snafu -- -x 1
+  $ mkzstat -oLH st lol -- mode 020644
 
 ::
 
