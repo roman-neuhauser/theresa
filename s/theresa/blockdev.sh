@@ -14,10 +14,8 @@ done; shift $I
 arg="${1?}"; shift
 
 declare -A st
-zstat -oLH st $arg || fail blockdev $arg does not exist
-(( st[mode] & 8#60000 )) || {
-  (( 0 == (st[mode] & 8#40000) )) || fail blockdev $arg is a directory
-}
+zstat -oLH st $arg || fail -x blockdev $arg does not exist
+itsa blockdev "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
 
 I=
 N=
