@@ -17,4 +17,5 @@ does it exist at all? ::
   $ touch snafu
 
   $ theresa mountpoint snafu
-  FAIL: mountpoint snafu is a plain file
+  FAIL: mountpoint snafu is a regular file
+  [1]

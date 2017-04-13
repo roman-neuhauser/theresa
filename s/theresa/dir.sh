@@ -14,7 +14,7 @@ arg="${1?}"; shift
 
 [[ -e $arg ]] || fail dir $arg does not exist
 [[ -d $arg ]] || {
-  ! [[ -f $arg ]] || fail dir $arg is a plain file
+  ! [[ -f $arg ]] || fail dir $arg is a regular file
 }
 
 I=

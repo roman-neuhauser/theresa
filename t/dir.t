@@ -10,7 +10,7 @@ does it exist at all? ::
   $ touch snafu
 
   $ theresa dir snafu
-  FAIL: dir snafu is a plain file
+  FAIL: dir snafu is a regular file
 
   $ rm snafu
   $ mkdir snafu

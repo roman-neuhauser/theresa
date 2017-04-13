@@ -12,7 +12,7 @@ arg="${1?}"; shift
 
 [[ -e $arg ]] || fail mountpoint $arg does not exist
 [[ -d $arg ]] || {
-  ! [[ -f $arg ]] || fail mountpoint $arg is a plain file
+  ! [[ -f $arg ]] || fail mountpoint $arg is a regular file
 }
 
 I=
