@@ -12,10 +12,9 @@ done; shift $I
 
 arg="${1?}"; shift
 
-[[ -e $arg ]] || fail chardev $arg does not exist
-[[ -c $arg ]] || {
-  ! [[ -d $arg ]] || fail chardev $arg is a directory
-}
+declare -A st
+zstat -oLH st $arg || fail -x chardev $arg does not exist
+itsa chardev "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
 
 I=
 N=
