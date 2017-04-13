@@ -4,16 +4,20 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
+
+zmodload -F zsh/stat b:zstat
+
 while haveopt I N A h help -- "$@"; do
   :
 done; shift $I
 
 arg="${1?}"; shift
 
-[[ -e $arg ]] || fail mountpoint $arg does not exist
-[[ -d $arg ]] || {
-  ! [[ -f $arg ]] || fail mountpoint $arg is a regular file
-}
+declare -A st
+zstat -oLH st $arg || fail -x mountpoint $arg does not exist
+itsa directory "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
+# a hole
+fail -x directory $arg is not a mountpoint
 
 I=
 N=
@@ -23,16 +27,6 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  empty)
-    matches=($arg(^F))
-    (( $#matches )) \
-    || fail mountpoint $arg is not empty
-  ;;
-  non-empty)
-    matches=($arg(F))
-    (( $#matches )) \
-    || fail mountpoint $arg is empty
-  ;;
   owned-by)
     declare -A st
     zstat -L -H st $arg
