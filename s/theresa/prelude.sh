@@ -13,6 +13,8 @@ setopt warn_create_global
 
 . haveopt.sh
 
+declare -gi FAILURES
+
 function fail
 {
   local ex=0
@@ -21,7 +23,7 @@ function fail
     local arg=$2
     shift 2
     local -A st; st=("$@")
-    ! itsa directory "${(@kv)st}" || fail -x $arg is a directory
+    ! itsa dir       "${(@kv)st}" || fail -x $arg is a directory
     ! itsa chardev   "${(@kv)st}" || fail -x $arg is a chardev
     ! itsa blockdev  "${(@kv)st}" || fail -x $arg is a blockdev
     ! itsa file      "${(@kv)st}" || fail -x $arg is a regular file
@@ -37,6 +39,7 @@ function fail
   ;;
   esac
   printf >&2 -- "FAIL: %s\n" "$*"
+  FAILURES=$(( FAILURES + 1 ))
   (( ex == 0 )) || exit 1
 }
 
@@ -47,7 +50,7 @@ function itsa
   case $t in
   blockdev)   (( ($st[mode] & 8#170000) == 8#060000 )) ;;
   chardev)    (( ($st[mode] & 8#170000) == 8#020000 )) ;;
-  directory)  (( ($st[mode] & 8#170000) == 8#040000 )) ;;
+  dir)        (( ($st[mode] & 8#170000) == 8#040000 )) ;;
   file)       (( ($st[mode] & 8#170000) == 8#100000 )) ;;
   fifo)       (( ($st[mode] & 8#170000) == 8#010000 )) ;;
   symlink)    (( ($st[mode] & 8#170000) == 8#120000 )) ;;

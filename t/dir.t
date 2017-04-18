@@ -2,18 +2,25 @@
 
   $ . $TESTDIR/setup
 
+  $ export fake_zstat=1
+
+  $ fake -cvx 1 getpwent
+
 does it exist at all? ::
+
+  $ mkzstat -oLH st snafu -- -x 1
 
   $ theresa dir snafu
   FAIL: dir snafu does not exist
+  [1]
 
-  $ touch snafu
+  $ mkzstat -oLH st snafu -- uid 0 gid 0 mode 100755
 
   $ theresa dir snafu
-  FAIL: dir snafu is a regular file
+  FAIL: snafu is a regular file
+  [1]
 
-  $ rm snafu
-  $ mkdir snafu
+  $ mkzstat -oLH st snafu -- uid 0 gid 0 mode 040755 size 2
 
   $ theresa dir snafu
 
@@ -24,7 +31,7 @@ is it empty? ::
   $ theresa dir snafu --non-empty
   FAIL: dir snafu is empty
 
-  $ touch snafu/fubar
+  $ mkzstat -oLH st snafu -- uid 0 gid 0 mode 040755 size 3
 
   $ theresa dir snafu --non-empty
 
@@ -33,18 +40,24 @@ is it empty? ::
 
 what about permissions? ::
 
-  $ chown -R $(id -nu):$(id -ng) snafu
-  $ chmod 0710 snafu
+  $ echo 69 | fake -vo getpwent -u lmao
+  $ echo lmao | fake -vo getpwent -n 69
 
-  $ theresa dir snafu --owned-by not-$(id -nu)
-  FAIL: dir snafu is owned by * (glob)
+  $ echo 42 | fake -vo getgrent -g omgwtf
+  $ echo omgwtf | fake -vo getgrent -n 42
 
-  $ theresa dir snafu --owned-by $(id -nu)
+  $ mkzstat -oLH st snafu \
+  > -- uid 69 gid 42 mode 040710 size 3
 
-  $ theresa dir snafu --in-group not-$(id -ng)
-  FAIL: dir snafu is in group * (glob)
+  $ theresa dir snafu --owned-by stranger
+  FAIL: dir snafu is owned by lmao
 
-  $ theresa dir snafu --in-group $(id -ng)
+  $ theresa dir snafu --owned-by lmao
+
+  $ theresa dir snafu --in-group noway
+  FAIL: dir snafu is in group omgwtf
+
+  $ theresa dir snafu --in-group omgwtf
 
   $ theresa dir snafu --mode 0755
   FAIL: dir snafu has mode 0710

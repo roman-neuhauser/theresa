@@ -12,10 +12,11 @@ done; shift $I
 
 arg="${1?}"; shift
 
-[[ -e $arg ]] || fail dir $arg does not exist
-[[ -d $arg ]] || {
-  ! [[ -f $arg ]] || fail dir $arg is a regular file
-}
+declare -r t=dir
+
+declare -A st
+zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
+itsa $t "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
 
 I=
 N=
@@ -26,33 +27,25 @@ while haveopt I N A \
 do
   case $N in
   empty)
-    matches=($arg(^F))
-    (( $#matches )) \
-    || fail dir $arg is not empty
+    (( $st[size] < 3 )) \
+    || fail $t $arg is not empty
   ;;
   non-empty)
-    matches=($arg(F))
-    (( $#matches )) \
-    || fail dir $arg is empty
+    (( $st[size] > 2 )) \
+    || fail $t $arg is empty
   ;;
   owned-by)
-    declare -A st
-    zstat -L -H st $arg
-    [[ $st[uid] == $(id -u $A 2>/dev/null || :) ]] \
-    || fail dir $arg is owned by $(id -nu $st[uid])
+    [[ $st[uid] == $(getpwent -u $A 2>/dev/null || :) ]] \
+    || fail $t $arg is owned by $(getpwent -n $st[uid])
   ;;
   in-group)
-    declare -A st
-    zstat -L -H st $arg
-    [[ $st[gid] == $(id -g $A 2>/dev/null || :) ]] \
-    || fail dir $arg is in group $(id -ng $st[gid])
+    [[ $st[gid] == $(getgrent -g $A 2>/dev/null || :) ]] \
+    || fail $t $arg is in group $(getgrent -n $st[gid])
   ;;
   mode)
-    declare -A st
-    zstat -L -H st $arg
     declare -i 8 mode=$((st[mode] & ~8#170000))
     (( $mode == $A )) \
-    || fail dir $arg has mode $mode
+    || fail $t $arg has mode $mode
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac
