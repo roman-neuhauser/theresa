@@ -6,7 +6,7 @@ Synopsis
 
 ::
 
-  $ theresa dir PATHNAME PREDICATE...
+  $ theresa directory PATHNAME PREDICATE...
 
 
 Predicates
@@ -23,4 +23,4 @@ Examples
 
 ::
 
-  $ theresa dir /var/empty --empty --owned-by root --in-group wheel --mode 755
+  $ theresa directory /var/empty --empty --owned-by root --in-group wheel --mode 755

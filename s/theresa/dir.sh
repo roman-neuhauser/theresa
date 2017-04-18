@@ -12,7 +12,7 @@ done; shift $I
 
 arg="${1?}"; shift
 
-declare -r t=dir
+declare -r t=directory
 
 declare -A st
 zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist

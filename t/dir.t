@@ -11,7 +11,7 @@ does it exist at all? ::
   $ mkzstat -oLH st snafu -- -x 1
 
   $ theresa dir snafu
-  FAIL: dir snafu does not exist
+  FAIL: directory snafu does not exist
   [1]
 
   $ mkzstat -oLH st snafu -- uid 0 gid 0 mode 100755
@@ -29,14 +29,14 @@ is it empty? ::
   $ theresa dir snafu --empty
 
   $ theresa dir snafu --non-empty
-  FAIL: dir snafu is empty
+  FAIL: directory snafu is empty
 
   $ mkzstat -oLH st snafu -- uid 0 gid 0 mode 040755 size 3
 
   $ theresa dir snafu --non-empty
 
   $ theresa dir snafu --empty
-  FAIL: dir snafu is not empty
+  FAIL: directory snafu is not empty
 
 what about permissions? ::
 
@@ -50,16 +50,16 @@ what about permissions? ::
   > -- uid 69 gid 42 mode 040710 size 3
 
   $ theresa dir snafu --owned-by stranger
-  FAIL: dir snafu is owned by lmao
+  FAIL: directory snafu is owned by lmao
 
   $ theresa dir snafu --owned-by lmao
 
   $ theresa dir snafu --in-group noway
-  FAIL: dir snafu is in group omgwtf
+  FAIL: directory snafu is in group omgwtf
 
   $ theresa dir snafu --in-group omgwtf
 
   $ theresa dir snafu --mode 0755
-  FAIL: dir snafu has mode 0710
+  FAIL: directory snafu has mode 0710
 
   $ theresa dir snafu --mode 0710

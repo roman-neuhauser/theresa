@@ -23,7 +23,7 @@ function fail
     local arg=$2
     shift 2
     local -A st; st=("$@")
-    ! itsa dir       "${(@kv)st}" || fail -x $arg is a directory
+    ! itsa directory "${(@kv)st}" || fail -x $arg is a directory
     ! itsa chardev   "${(@kv)st}" || fail -x $arg is a chardev
     ! itsa blockdev  "${(@kv)st}" || fail -x $arg is a blockdev
     ! itsa file      "${(@kv)st}" || fail -x $arg is a regular file
@@ -50,7 +50,7 @@ function itsa
   case $t in
   blockdev)   (( ($st[mode] & 8#170000) == 8#060000 )) ;;
   chardev)    (( ($st[mode] & 8#170000) == 8#020000 )) ;;
-  dir)        (( ($st[mode] & 8#170000) == 8#040000 )) ;;
+  directory)  (( ($st[mode] & 8#170000) == 8#040000 )) ;;
   file)       (( ($st[mode] & 8#170000) == 8#100000 )) ;;
   fifo)       (( ($st[mode] & 8#170000) == 8#010000 )) ;;
   symlink)    (( ($st[mode] & 8#170000) == 8#120000 )) ;;

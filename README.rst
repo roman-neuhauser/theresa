@@ -74,7 +74,7 @@ Examples
 ::
 
   $ theresa dir /var/empty --empty --owned-by root --in-group wheel --mode 755
-  FAIL: dir /var/empty is in group root
+  FAIL: directory /var/empty is in group root
   $ theresa mountpoint / --for zpool/ROOT/default --type zfs --options rw,noatime,nfsv4acls
   $ theresa symlink /etc/termcap --to /usr/share/misc/termcap --owned-by root --in-group wheel
   $ theresa user postgres --in-group postgres --at-home-in /var/db/postgres
