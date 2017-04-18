@@ -7,11 +7,13 @@ does it exist at all? ::
 
   $ theresa symlink snafu
   FAIL: symlink snafu does not exist
+  [1]
 
   $ mkdir snafu
 
   $ theresa symlink snafu
-  FAIL: symlink snafu is a directory
+  FAIL: snafu is a directory
+  [1]
 
   $ rmdir snafu
   $ ln -s . snafu

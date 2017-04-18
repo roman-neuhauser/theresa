@@ -13,9 +13,11 @@ done; shift $I
 
 arg="${1?}"; shift
 
+declare -r t=blockdev
+
 declare -A st
-zstat -oLH st $arg || fail -x blockdev $arg does not exist
-itsa blockdev "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
+zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
+itsa $t "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
 
 I=
 N=
@@ -25,28 +27,20 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  empty)
-    [[ ! -s $arg ]] \
-    || fail blockdev $arg is not empty
-  ;;
-  non-empty)
-    [[ -s $arg ]] \
-    || fail blockdev $arg is empty
-  ;;
   owned-by)
     declare uid=$(getpwent -u $A 2>/dev/null || :)
     [[ $st[uid] == $uid ]] \
-    || fail blockdev $arg is owned by $(getpwent -n $st[uid]), not $A
+    || fail $t $arg is owned by $(getpwent -n $st[uid]), not $A
   ;;
   in-group)
     declare gid=$(getgrent -g $A 2>/dev/null || :)
     [[ $st[gid] == $gid ]] \
-    || fail blockdev $arg is in group $(getgrent -n $st[gid]), not $A
+    || fail $t $arg is in group $(getgrent -n $st[gid]), not $A
   ;;
   mode)
     declare -i 8 mode=$((st[mode] & ~8#170000))
     (( $mode == $A )) \
-    || fail blockdev $arg has mode $mode, not $A
+    || fail $t $arg has mode $mode, not $A
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

@@ -2,6 +2,13 @@
 
   $ . $TESTDIR/setup
 
+  $ export FAKE_BINDIR="$PWD"
+  $ export PATH="$FAKE_BINDIR:$PATH"
+
+  $ echo 0 | fake -o getgrent -g wheel
+  $ echo wheel | fake -o getgrent -n 0
+
+
 ::
 
   $ theresa chardev /dev/null

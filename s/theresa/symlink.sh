@@ -12,11 +12,11 @@ done; shift $I
 
 arg="${1?}"; shift
 
-[[ -L $arg ]] || {
-  ; [[ -e $arg ]] || fail symlink $arg does not exist
-  ! [[ -d $arg ]] || fail symlink $arg is a directory
-  ! [[ -f $arg ]] || fail symlink $arg is a file
-}
+declare -r t=symlink
+
+declare -A st
+zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
+itsa $t "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
 
 I=
 N=
