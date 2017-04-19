@@ -10,7 +10,9 @@ done; shift $I
 
 arg="${1?}"; shift
 
-getpwent $arg 2>/dev/null || fail user $arg does not exist
+declare -r t=user
+
+getpwent $arg 2>/dev/null || fail $t $arg does not exist
 
 I=
 N=
@@ -23,11 +25,11 @@ do
   at-home-in)
     declare h="${$(getpwent -qd "$arg")#dir=}"
     :; [[ "$h" == "$A" ]] \
-    || fail user $arg is at home in "$h"
+    || fail $t $arg is at home in "$h"
   ;;
   in-group)
     :; getgrent -qt "$arg" "$A" \
-    || fail user $arg is not in group "$A"
+    || fail $t $arg is not in group "$A"
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

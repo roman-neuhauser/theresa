@@ -12,10 +12,12 @@ done; shift $I
 
 arg="${1?}"; shift
 
+declare -r t=pipe
+
 [[ -p $arg ]] || {
-  ; [[ -e $arg ]] || fail pipe $arg does not exist
-  ! [[ -d $arg ]] || fail pipe $arg is a directory
-  ! [[ -f $arg ]] || fail pipe $arg is a file
+  ; [[ -e $arg ]] || fail $t $arg does not exist
+  ! [[ -d $arg ]] || fail $t $arg is a directory
+  ! [[ -f $arg ]] || fail $t $arg is a file
 }
 
 I=
@@ -30,20 +32,20 @@ do
     declare -A st
     zstat -L -H st $arg
     [[ $st[uid] == $(id -u $A 2>/dev/null || :) ]] \
-    || fail pipe $arg is owned by $(id -nu $st[uid])
+    || fail $t $arg is owned by $(id -nu $st[uid])
   ;;
   in-group)
     declare -A st
     zstat -L -H st $arg
     [[ $st[gid] == $(id -g $A 2>/dev/null || :) ]] \
-    || fail pipe $arg is in group $(id -ng $st[gid])
+    || fail $t $arg is in group $(id -ng $st[gid])
   ;;
   mode)
     declare -A st
     zstat -L -H st $arg
     declare -i 8 mode=$((st[mode] & ~8#170000))
     (( $mode == $A )) \
-    || fail pipe $arg has mode $mode
+    || fail $t $arg has mode $mode
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

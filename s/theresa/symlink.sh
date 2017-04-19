@@ -30,18 +30,18 @@ do
     declare -A st
     zstat -L -H st $arg
     [[ $st[uid] == $(id -u $A 2>/dev/null || :) ]] \
-    || fail symlink $arg is owned by $(id -nu $st[uid])
+    || fail $t $arg is owned by $(id -nu $st[uid])
   ;;
   in-group)
     declare -A st
     zstat -L -H st $arg
     [[ $st[gid] == $(id -g $A 2>/dev/null || :) ]] \
-    || fail symlink $arg is in group $(id -ng $st[gid])
+    || fail $t $arg is in group $(id -ng $st[gid])
   ;;
   to)
     declare val=$(readlink "$arg")
     :; [[ "$val" == "$A" ]] \
-    || fail symlink $arg points to $val
+    || fail $t $arg points to $val
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

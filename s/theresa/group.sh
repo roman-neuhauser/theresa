@@ -10,7 +10,9 @@ done; shift $I
 
 arg="${1?}"; shift
 
-getgrent $arg 2>/dev/null || fail group $arg does not exist
+declare -r t=group
+
+getgrent $arg 2>/dev/null || fail $t $arg does not exist
 
 I=
 N=
@@ -22,15 +24,15 @@ do
   case $N in
   not-password-protected)
     : \
-    || fail group $arg has a password
+    || fail $t $arg has a password
   ;;
   password-protected)
     : \
-    || fail group $arg has no password
+    || fail $t $arg has no password
   ;;
   with-member)
     : \
-    || fail user $arg is not in group "$A"
+    || fail user $arg is not in $t "$A"
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac
