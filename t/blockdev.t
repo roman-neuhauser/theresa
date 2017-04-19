@@ -24,6 +24,10 @@
   FAIL: lol is a chardev
   [1]
 
+  $ theresa blockdev fubar --owned-by nobody
+  FAIL: blockdev fubar is owned by root, not nobody
+  [1]
+
   $ theresa blockdev fubar --owned-by root --in-group wheel --mode 666
   FAIL: blockdev fubar has mode 0640, not 666
   [1]

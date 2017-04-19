@@ -27,11 +27,11 @@ function fail
     ! itsa chardev   "${(@kv)st}" || fail -x $arg is a chardev
     ! itsa blockdev  "${(@kv)st}" || fail -x $arg is a blockdev
     ! itsa file      "${(@kv)st}" || fail -x $arg is a regular file
-    ! itsa fifo      "${(@kv)st}" || fail -x $arg is a fifo or socket
+    ! itsa pipe      "${(@kv)st}" || fail -x $arg is a named pipe or socket
     ! itsa symlink   "${(@kv)st}" || fail -x $arg is a symbolic link
     ! itsa socket    "${(@kv)st}" || fail -x $arg is a socket
     ! itsa whiteout  "${(@kv)st}" || fail -x $arg is a whiteout
-    printf -- >&2 "ERROR: unknown object type %s\n" "${(qq)st[mode]}"
+    printf -- >&2 "ERROR: $0: unknown object type %s\n" "${(qq)st[mode]}"
   ;;
   -x)
     ex=1
@@ -52,12 +52,39 @@ function itsa
   chardev)    (( ($st[mode] & 8#170000) == 8#020000 )) ;;
   directory)  (( ($st[mode] & 8#170000) == 8#040000 )) ;;
   file)       (( ($st[mode] & 8#170000) == 8#100000 )) ;;
-  fifo)       (( ($st[mode] & 8#170000) == 8#010000 )) ;;
+  pipe)       (( ($st[mode] & 8#170000) == 8#010000 )) ;;
   symlink)    (( ($st[mode] & 8#170000) == 8#120000 )) ;;
   socket)     (( ($st[mode] & 8#170000) == 8#140000 )) ;;
   whiteout)   (( ($st[mode] & 8#170000) == 8#160000 )) ;;
   *)
-    printf -- >&2 "ERROR: unknown object type %s\n" "${(qq)t}"
+    printf -- >&2 "ERROR: $0: unknown object type %s\n" "${(qq)t}"
   ;;
   esac
 }
+
+function assert-owned-by # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  declare uid=$(getpwent -u $A 2>/dev/null || :)
+  :; [[ $st[uid] == $uid ]] \
+  || fail $t $arg is owned by $(getpwent -n $st[uid]), not $A
+} # }}}
+
+function assert-in-group # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  declare gid=$(getgrent -g $A 2>/dev/null || :)
+  :; [[ $st[gid] == $gid ]] \
+  || fail $t $arg is in group $(getgrent -n $st[gid]), not $A
+} # }}}
+
+function assert-mode # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  declare -i 8 mode=$((st[mode] & ~8#170000))
+  :; (( $mode == $A )) \
+  || fail $t $arg has mode $mode, not $A
+} # }}}

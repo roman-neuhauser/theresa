@@ -28,19 +28,13 @@ while haveopt I N A \
 do
   case $N in
   owned-by)
-    declare uid=$(getpwent -u $A 2>/dev/null || :)
-    [[ $st[uid] == $uid ]] \
-    || fail $t $arg is owned by $(getpwent -n $st[uid]), not $A
+    assert-owned-by $t $arg $A "${(@kv)st}"
   ;;
   in-group)
-    declare gid=$(getgrent -g $A 2>/dev/null || :)
-    [[ $st[gid] == $gid ]] \
-    || fail $t $arg is in group $(getgrent -n $st[gid]), not $A
+    assert-in-group $t $arg $A "${(@kv)st}"
   ;;
   mode)
-    declare -i 8 mode=$((st[mode] & ~8#170000))
-    (( $mode == $A )) \
-    || fail $t $arg has mode $mode, not $A
+    assert-mode $t $arg $A "${(@kv)st}"
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

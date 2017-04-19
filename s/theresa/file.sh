@@ -14,10 +14,9 @@ arg="${1?}"; shift
 
 declare -r t=file
 
-[[ -e $arg ]] || fail $t $arg does not exist
-[[ -f $arg ]] || {
-  ! [[ -d $arg ]] || fail $t $arg is a directory
-}
+declare -A st
+zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
+itsa $t "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
 
 I=
 N=
@@ -28,31 +27,21 @@ while haveopt I N A \
 do
   case $N in
   empty)
-    [[ ! -s $arg ]] \
+    (( st[size] == 0 )) \
     || fail $t $arg is not empty
   ;;
   non-empty)
-    [[ -s $arg ]] \
+    (( st[size] != 0 )) \
     || fail $t $arg is empty
   ;;
   owned-by)
-    declare -A st
-    zstat -L -H st $arg
-    [[ $st[uid] == $(id -u $A 2>/dev/null || :) ]] \
-    || fail $t $arg is owned by $(id -nu $st[uid])
+    assert-owned-by $t $arg $A "${(@kv)st}"
   ;;
   in-group)
-    declare -A st
-    zstat -L -H st $arg
-    [[ $st[gid] == $(id -g $A 2>/dev/null || :) ]] \
-    || fail $t $arg is in group $(id -ng $st[gid])
+    assert-in-group $t $arg $A "${(@kv)st}"
   ;;
   mode)
-    declare -A st
-    zstat -L -H st $arg
-    declare -i 8 mode=$((st[mode] & ~8#170000))
-    (( $mode == $A )) \
-    || fail $t $arg has mode $mode
+    assert-mode $t $arg $A "${(@kv)st}"
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

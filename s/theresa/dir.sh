@@ -35,17 +35,13 @@ do
     || fail $t $arg is empty
   ;;
   owned-by)
-    [[ $st[uid] == $(getpwent -u $A 2>/dev/null || :) ]] \
-    || fail $t $arg is owned by $(getpwent -n $st[uid])
+    assert-owned-by $t $arg $A "${(@kv)st}"
   ;;
   in-group)
-    [[ $st[gid] == $(getgrent -g $A 2>/dev/null || :) ]] \
-    || fail $t $arg is in group $(getgrent -n $st[gid])
+    assert-in-group $t $arg $A "${(@kv)st}"
   ;;
   mode)
-    declare -i 8 mode=$((st[mode] & ~8#170000))
-    (( $mode == $A )) \
-    || fail $t $arg has mode $mode
+    assert-mode $t $arg $A "${(@kv)st}"
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

@@ -20,4 +20,4 @@
   > --mode 0111 \
   > --in-group wheel \
   > --owned-by root
-  FAIL: chardev /dev/null has mode 0666
+  FAIL: chardev /dev/null has mode 0666, not 0111

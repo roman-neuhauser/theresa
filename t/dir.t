@@ -4,7 +4,6 @@
 
   $ export fake_zstat=1
 
-  $ fake -cvx 1 getpwent
 
 does it exist at all? ::
 
@@ -49,17 +48,17 @@ what about permissions? ::
   $ mkzstat -oLH st snafu \
   > -- uid 69 gid 42 mode 040710 size 3
 
-  $ theresa dir snafu --owned-by stranger
-  FAIL: directory snafu is owned by lmao
+  $ theresa dir snafu --owned-by rofl
+  FAIL: directory snafu is owned by lmao, not rofl
 
   $ theresa dir snafu --owned-by lmao
 
   $ theresa dir snafu --in-group noway
-  FAIL: directory snafu is in group omgwtf
+  FAIL: directory snafu is in group omgwtf, not noway
 
   $ theresa dir snafu --in-group omgwtf
 
   $ theresa dir snafu --mode 0755
-  FAIL: directory snafu has mode 0710
+  FAIL: directory snafu has mode 0710, not 0755
 
   $ theresa dir snafu --mode 0710
