@@ -12,7 +12,7 @@ arg="${1?}"; shift
 
 declare -r t=group
 
-getgrent $arg 2>/dev/null || fail $t $arg does not exist
+getgrent -q $arg || fail $t $arg does not exist
 
 I=
 N=

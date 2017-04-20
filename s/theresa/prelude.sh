@@ -66,18 +66,18 @@ function assert-owned-by # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
-  declare uid=$(getpwent -u $A 2>/dev/null || :)
+  declare uid=$(getpwent -qu $A || :)
   :; [[ $st[uid] == $uid ]] \
-  || fail $t $arg is owned by $(getpwent -n $st[uid]), not $A
+  || fail $t $arg is owned by $(getpwent -qn $st[uid]), not $A
 } # }}}
 
 function assert-in-group # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
-  declare gid=$(getgrent -g $A 2>/dev/null || :)
+  declare gid=$(getgrent -qg $A || :)
   :; [[ $st[gid] == $gid ]] \
-  || fail $t $arg is in group $(getgrent -n $st[gid]), not $A
+  || fail $t $arg is in group $(getgrent -qn $st[gid]), not $A
 } # }}}
 
 function assert-mode # {{{

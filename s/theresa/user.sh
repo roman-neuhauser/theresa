@@ -12,7 +12,7 @@ arg="${1?}"; shift
 
 declare -r t=user
 
-getpwent $arg 2>/dev/null || fail $t $arg does not exist
+getpwent -q $arg || fail $t $arg does not exist
 
 I=
 N=
@@ -23,7 +23,7 @@ while haveopt I N A \
 do
   case $N in
   at-home-in)
-    declare h=${$(getpwent -qd $arg)#dir=}
+    declare h=$(getpwent -qd $arg)
     :; [[ $h == $A ]] \
     || fail $t $arg is at home in $h
   ;;

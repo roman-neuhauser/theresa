@@ -4,11 +4,13 @@
 
   $ export fake_zstat=1
 
-  $ echo 100 | fake -o getpwent -u nobody
-  $ echo nobody | fake -o getpwent -n 100
+  $ echo 200 | fake -o getpwent -qu somebody
+  $ echo 100 | fake -o getpwent -qu nobody
+  $ echo nobody | fake -o getpwent -qn 100
 
-  $ echo 111 | fake -o getgrent -g empty
-  $ echo empty | fake -o getgrent -n 111
+  $ fake -x 1 getgrent -qg everybody
+  $ echo 111 | fake -o getgrent -qg empty
+  $ echo empty | fake -o getgrent -qn 111
 
 
 does it exist at all? ::

@@ -2,6 +2,7 @@
 
   $ . $TESTDIR/setup
 
+  $ fake -x 1 getgrent -q fubar
 
 does it exist at all? ::
 

@@ -4,6 +4,8 @@
 
   $ export fake_zstat=1
 
+  $ fake -x 1 getpwent -qu rofl
+
 
 does it exist at all? ::
 
@@ -41,11 +43,11 @@ is it empty? ::
 
 what about permissions? ::
 
-  $ echo 69 | fake -vo getpwent -u lmao
-  $ echo lmao | fake -vo getpwent -n 69
+  $ echo 69 | fake -vo getpwent -qu lmao
+  $ echo lmao | fake -vo getpwent -qn 69
 
-  $ echo 42 | fake -vo getgrent -g omgwtf
-  $ echo omgwtf | fake -vo getgrent -n 42
+  $ echo 42 | fake -vo getgrent -qg omgwtf
+  $ echo omgwtf | fake -vo getgrent -qn 42
 
   $ mkzstat -oLH st snafu \
   > -- uid 69 gid 42 mode 040710 size 3
@@ -55,6 +57,8 @@ what about permissions? ::
   [1]
 
   $ theresa dir snafu --owned-by lmao
+
+  $ fake -x 1 getgrent -qg noway
 
   $ theresa dir snafu --in-group noway
   FAIL: directory snafu is in group omgwtf, not noway

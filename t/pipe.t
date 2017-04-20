@@ -4,11 +4,14 @@
 
   $ export fake_zstat=1
 
-  $ echo thatguy | fake -o getpwent -n 234
-  $ echo 234 | fake -o getpwent -u thatguy
+  $ fake -x 1 getpwent -qu pipeless
 
-  $ echo 345 | fake -o getgrent -g thoseguys
-  $ echo thoseguys | fake -o getgrent -n 345
+  $ echo thatguy | fake -o getpwent -qn 234
+  $ echo 234 | fake -o getpwent -qu thatguy
+
+  $ fake -x 1 getgrent -qg pipeless
+  $ echo 345 | fake -o getgrent -qg thoseguys
+  $ echo thoseguys | fake -o getgrent -qn 345
 
 
 does it exist at all? ::

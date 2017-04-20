@@ -7,7 +7,7 @@
 
 does it exist at all? ::
 
-  $ fake -x 1 getpwent fubar
+  $ fake -x 1 getpwent -q fubar
 
   $ theresa user fubar
   FAIL: user fubar does not exist
@@ -16,7 +16,7 @@ does it exist at all? ::
 
 where is its home at? ::
 
-  $ fake -x 0 getpwent fubar
+  $ fake -x 0 getpwent -q fubar
   $ echo /some/where | fake -o getpwent -qd fubar
 
   $ theresa user fubar --at-home-in /some/where
