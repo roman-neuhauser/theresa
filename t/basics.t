@@ -6,29 +6,23 @@ setup::
 test::
 
   $ theresa
-  theresa: usage: theresa -h|-hh
+  theresa: usage: theresa -h
   theresa: usage: theresa THING [PREDICATE...]
-  theresa: use `theresa -hh` to display help
+  theresa: use `theresa -h` to display help
 
   $ theresa -h
-  theresa: usage: theresa -h|-hh
-  theresa: usage: theresa THING [PREDICATE...]
-  theresa: use `theresa -hh` to display help
-
-  $ theresa -hh
-  theresa: usage: theresa -h|-hh
+  theresa: usage: theresa -h
   theresa: usage: theresa THING [PREDICATE...]
   
   Options:
   
-    -h      Display short usage help.
-            Given twice, display full help.
+    -h      Display this message.
 
   $ theresa -x
   theresa: error: unknown option -x
-  theresa: usage: theresa -h|-hh
+  theresa: usage: theresa -h
   theresa: usage: theresa THING [PREDICATE...]
-  theresa: use `theresa -hh` to display help
+  theresa: use `theresa -h` to display help
   [1]
 
   $ theresa snafubar
