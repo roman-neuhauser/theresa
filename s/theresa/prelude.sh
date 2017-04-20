@@ -31,14 +31,14 @@ function fail
     ! itsa symlink   "${(@kv)st}" || fail -x $arg is a symbolic link
     ! itsa socket    "${(@kv)st}" || fail -x $arg is a socket
     ! itsa whiteout  "${(@kv)st}" || fail -x $arg is a whiteout
-    printf -- >&2 "ERROR: $0: unknown object type %s\n" "${(qq)st[mode]}"
+    printf -->&2 "ERROR: $0: unknown object type %s\n" "${(qq)st[mode]}"
   ;;
   -x)
     ex=1
     shift
   ;;
   esac
-  printf >&2 -- "FAIL: %s\n" "$*"
+  printf -->&2 "FAIL: %s\n" "$*"
   FAILURES=$(( FAILURES + 1 ))
   (( ex == 0 )) || exit 1
 }
@@ -57,7 +57,7 @@ function itsa
   socket)     (( (st[mode] & 8#170000) == 8#140000 )) ;;
   whiteout)   (( (st[mode] & 8#170000) == 8#160000 )) ;;
   *)
-    printf -- >&2 "ERROR: $0: unknown object type %s\n" "${(qq)t}"
+    printf -->&2 "ERROR: $0: unknown object type %s\n" "${(qq)t}"
   ;;
   esac
 }
