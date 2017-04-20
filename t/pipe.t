@@ -37,15 +37,18 @@ what about permissions? ::
 
   $ theresa pipe snafu --owned-by pipeless
   FAIL: pipe snafu is owned by thatguy, not pipeless
+  [1]
 
   $ theresa pipe snafu --owned-by thatguy
 
   $ theresa pipe snafu --in-group pipeless
   FAIL: pipe snafu is in group thoseguys, not pipeless
+  [1]
 
   $ theresa pipe snafu --in-group thoseguys
 
   $ theresa pipe snafu --mode 0710
   FAIL: pipe snafu has mode 0744, not 0710
+  [1]
 
   $ theresa pipe snafu --mode 0744

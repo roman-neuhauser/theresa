@@ -29,6 +29,7 @@ is it empty? ::
 
   $ theresa dir snafu --non-empty
   FAIL: directory snafu is empty
+  [1]
 
   $ mkzstat -oLH st snafu -- uid 0 gid 0 mode 040755 size 3
 
@@ -36,6 +37,7 @@ is it empty? ::
 
   $ theresa dir snafu --empty
   FAIL: directory snafu is not empty
+  [1]
 
 what about permissions? ::
 
@@ -50,15 +52,18 @@ what about permissions? ::
 
   $ theresa dir snafu --owned-by rofl
   FAIL: directory snafu is owned by lmao, not rofl
+  [1]
 
   $ theresa dir snafu --owned-by lmao
 
   $ theresa dir snafu --in-group noway
   FAIL: directory snafu is in group omgwtf, not noway
+  [1]
 
   $ theresa dir snafu --in-group omgwtf
 
   $ theresa dir snafu --mode 0755
   FAIL: directory snafu has mode 0710, not 0755
+  [1]
 
   $ theresa dir snafu --mode 0710

@@ -9,6 +9,7 @@ does it exist at all? ::
 
   $ theresa netif fubar
   FAIL: netif fubar does not exist
+  [1]
 
 
 it is neither up nor down ::
@@ -18,9 +19,11 @@ it is neither up nor down ::
 
   $ theresa netif fubar --up
   FAIL: netif fubar is not up
+  [1]
 
   $ theresa netif fubar --down
   FAIL: netif fubar is not down
+  [1]
 
 
 it is up ::
@@ -35,6 +38,7 @@ it is up ::
 
   $ theresa netif fubar --down
   FAIL: netif fubar is not down
+  [1]
 
 
 it is down ::
@@ -49,3 +53,4 @@ it is down ::
 
   $ theresa netif fubar --up
   FAIL: netif fubar is not up
+  [1]

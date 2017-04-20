@@ -11,6 +11,7 @@ does it exist at all? ::
 
   $ theresa user fubar
   FAIL: user fubar does not exist
+  [1]
 
 
 where is its home at? ::

@@ -21,3 +21,4 @@
   > --in-group wheel \
   > --owned-by root
   FAIL: chardev /dev/null has mode 0666, not 0111
+  [1]

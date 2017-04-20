@@ -41,3 +41,5 @@ do
   *) echo "I=$I N=$N A=${A-}" ;;
   esac
 done
+
+exit $(( FAILURES != 0 ))

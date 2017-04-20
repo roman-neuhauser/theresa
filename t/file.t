@@ -35,6 +35,7 @@ is it empty? ::
 
   $ theresa file snafu --non-empty
   FAIL: file snafu is empty
+  [1]
 
   $ mkzstat -oLH st snafu \
   > -- mode 0100755 size 1
@@ -43,6 +44,7 @@ is it empty? ::
 
   $ theresa file snafu --empty
   FAIL: file snafu is not empty
+  [1]
 
 what about permissions? ::
 
@@ -51,15 +53,18 @@ what about permissions? ::
 
   $ theresa file snafu --owned-by whoever
   FAIL: file snafu is owned by thatguy, not whoever
+  [1]
 
   $ theresa file snafu --owned-by thatguy
 
   $ theresa file snafu --in-group people
   FAIL: file snafu is in group thoseguys, not people
+  [1]
 
   $ theresa file snafu --in-group thoseguys
 
   $ theresa file snafu --mode 0755
   FAIL: file snafu has mode 0710, not 0755
+  [1]
 
   $ theresa file snafu --mode 0710
