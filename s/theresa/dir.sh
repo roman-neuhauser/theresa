@@ -27,11 +27,11 @@ while haveopt I N A \
 do
   case $N in
   empty)
-    (( $st[size] < 3 )) \
+    (( st[size] < 3 )) \
     || fail $t $arg is not empty
   ;;
   non-empty)
-    (( $st[size] > 2 )) \
+    (( st[size] > 2 )) \
     || fail $t $arg is empty
   ;;
   owned-by)

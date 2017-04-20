@@ -23,13 +23,13 @@ while haveopt I N A \
 do
   case $N in
   at-home-in)
-    declare h="${$(getpwent -qd "$arg")#dir=}"
-    :; [[ "$h" == "$A" ]] \
-    || fail $t $arg is at home in "$h"
+    declare h=${$(getpwent -qd $arg)#dir=}
+    :; [[ $h == $A ]] \
+    || fail $t $arg is at home in $h
   ;;
   in-group)
-    :; getgrent -qt "$arg" "$A" \
-    || fail $t $arg is not in group "$A"
+    :; getgrent -qt $arg "$A" \
+    || fail $t $arg is not in group $A
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;
   esac

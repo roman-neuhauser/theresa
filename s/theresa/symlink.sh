@@ -34,7 +34,7 @@ do
   ;;
   to)
     declare val=$(readlink "$arg")
-    :; [[ "$val" == "$A" ]] \
+    :; [[ $val == $A ]] \
     || fail $t $arg points to $val
   ;;
   *) echo "I=$I N=$N A=${A-}" ;;

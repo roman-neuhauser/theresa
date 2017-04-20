@@ -48,14 +48,14 @@ function itsa
   local t=$1; shift
   local -A st; st=("$@")
   case $t in
-  blockdev)   (( ($st[mode] & 8#170000) == 8#060000 )) ;;
-  chardev)    (( ($st[mode] & 8#170000) == 8#020000 )) ;;
-  directory)  (( ($st[mode] & 8#170000) == 8#040000 )) ;;
-  file)       (( ($st[mode] & 8#170000) == 8#100000 )) ;;
-  pipe)       (( ($st[mode] & 8#170000) == 8#010000 )) ;;
-  symlink)    (( ($st[mode] & 8#170000) == 8#120000 )) ;;
-  socket)     (( ($st[mode] & 8#170000) == 8#140000 )) ;;
-  whiteout)   (( ($st[mode] & 8#170000) == 8#160000 )) ;;
+  blockdev)   (( (st[mode] & 8#170000) == 8#060000 )) ;;
+  chardev)    (( (st[mode] & 8#170000) == 8#020000 )) ;;
+  directory)  (( (st[mode] & 8#170000) == 8#040000 )) ;;
+  file)       (( (st[mode] & 8#170000) == 8#100000 )) ;;
+  pipe)       (( (st[mode] & 8#170000) == 8#010000 )) ;;
+  symlink)    (( (st[mode] & 8#170000) == 8#120000 )) ;;
+  socket)     (( (st[mode] & 8#170000) == 8#140000 )) ;;
+  whiteout)   (( (st[mode] & 8#170000) == 8#160000 )) ;;
   *)
     printf -- >&2 "ERROR: $0: unknown object type %s\n" "${(qq)t}"
   ;;
@@ -85,6 +85,6 @@ function assert-mode # {{{
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
   declare -i 8 mode=$((st[mode] & ~8#170000))
-  :; (( $mode == $A )) \
+  :; (( mode == A )) \
   || fail $t $arg has mode $mode, not $A
 } # }}}
