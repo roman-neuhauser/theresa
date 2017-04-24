@@ -1,11 +1,11 @@
 #!@ZSH@ -f
+# vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 declare -gr SELF="${0##*/}"
 
 declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
-
 
 zmodload -F zsh/stat b:zstat
 
@@ -18,8 +18,7 @@ arg="${1?}"; shift
 declare -r t=mountpoint
 
 declare -A st
-zstat -oLH st $arg || fail -x $t $arg does not exist
-itsa directory "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
+assert-presence $t $arg st
 # a hole
 fail -x directory $arg is not a $t
 
@@ -31,14 +30,10 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  owned-by)
-    assert-owned-by $t $arg $A "${(@kv)st}"
-  ;;
-  in-group)
-    assert-in-group $t $arg $A "${(@kv)st}"
-  ;;
-  mode)
-    assert-mode $t $arg $A "${(@kv)st}"
+  ( owned-by \
+  | in-group \
+  | mode )
+    assert-path-$N $t $arg "${A-}" "${(@kv)st}"
   ;;
   *)
     unknown-option $t $arg "$I" "$N" "$A"

@@ -1,4 +1,5 @@
 #!@ZSH@ -f
+# vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 declare -gr SELF="${0##*/}"
 
@@ -24,14 +25,9 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  at-home-in)
-    declare h=$(getpwent -qd $arg)
-    :; [[ $h == $A ]] \
-    || fail $t $arg is at home in $h
-  ;;
-  in-group)
-    :; getgrent -qt $arg "$A" \
-    || fail $t $arg is not in group $A
+  ( at-home-in \
+  | in-group )
+    assert-user-$N $t $arg "${A-}"
   ;;
   *)
     unknown-option $t $arg "$I" "$N" "$A"

@@ -1,4 +1,5 @@
 #!@ZSH@ -f
+# vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 declare -gr SELF="${0##*/}"
 
@@ -17,8 +18,7 @@ arg="${1?}"; shift
 declare -r t=file
 
 declare -A st
-zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
-itsa $t "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
+assert-presence $t $arg st
 
 I=
 N=
@@ -28,22 +28,14 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  empty)
-    (( st[size] == 0 )) \
-    || fail $t $arg is not empty
+  ( empty \
+  | non-empty )
+    assert-file-$N $t $arg "${A-}" "${(@kv)st}"
   ;;
-  non-empty)
-    (( st[size] != 0 )) \
-    || fail $t $arg is empty
-  ;;
-  owned-by)
-    assert-owned-by $t $arg $A "${(@kv)st}"
-  ;;
-  in-group)
-    assert-in-group $t $arg $A "${(@kv)st}"
-  ;;
-  mode)
-    assert-mode $t $arg $A "${(@kv)st}"
+  ( owned-by \
+  | in-group \
+  | mode )
+    assert-path-$N $t $arg "${A-}" "${(@kv)st}"
   ;;
   *)
     unknown-option $t $arg "$I" "$N" "$A"

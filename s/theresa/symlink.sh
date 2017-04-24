@@ -1,4 +1,5 @@
 #!@ZSH@ -f
+# vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 declare -gr SELF="${0##*/}"
 
@@ -17,8 +18,7 @@ arg="${1?}"; shift
 declare -r t=symlink
 
 declare -A st
-zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
-itsa $t "${(@kv)st}" || fail --detect $arg "${(@kv)st}"
+assert-presence $t $arg st
 
 I=
 N=
@@ -28,16 +28,13 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  owned-by)
-    assert-owned-by $t $arg $A "${(@kv)st}"
-  ;;
-  in-group)
-    assert-in-group $t $arg $A "${(@kv)st}"
+  ( owned-by \
+  | in-group \
+  | mode )
+    assert-path-$N $t $arg "${A-}" "${(@kv)st}"
   ;;
   to)
-    declare val=$(readlink "$arg")
-    :; [[ $val == $A ]] \
-    || fail $t $arg points to $val
+    assert-symlink-to $t $arg "${A-}" "${(@kv)st}"
   ;;
   *)
     unknown-option $t $arg "$I" "$N" "$A"

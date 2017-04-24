@@ -1,4 +1,5 @@
 #!@ZSH@ -f
+# vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 declare -gr SELF="${0##*/}"
 
@@ -24,17 +25,10 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  not-password-protected)
-    : \
-    || fail $t $arg has a password
-  ;;
-  password-protected)
-    : \
-    || fail $t $arg has no password
-  ;;
-  with-member)
-    : \
-    || fail user $arg is not in $t "$A"
+  ( not-password-protected \
+  | password-protected \
+  | with-member )
+    assert-group-$N $t $arg "${A-}"
   ;;
   *)
     unknown-option $t $arg "$I" "$N" "$A"

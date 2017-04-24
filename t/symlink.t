@@ -32,8 +32,7 @@ does it exist at all? ::
 
 what does it point at? ::
 
-  $ mkzstat -oLH st rofl -- mode 0120755
-  $ echo lmao | fake -o readlink rofl
+  $ mkzstat -oLH st rofl -- mode 0120755 link lmao
 
   $ theresa symlink rofl --to fubar
   FAIL: symlink rofl points to lmao

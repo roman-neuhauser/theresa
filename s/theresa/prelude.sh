@@ -50,6 +50,7 @@ function itsa
   case $t in
   blockdev)   (( (st[mode] & 8#170000) == 8#060000 )) ;;
   chardev)    (( (st[mode] & 8#170000) == 8#020000 )) ;;
+  mountpoint) ;&
   directory)  (( (st[mode] & 8#170000) == 8#040000 )) ;;
   file)       (( (st[mode] & 8#170000) == 8#100000 )) ;;
   pipe)       (( (st[mode] & 8#170000) == 8#010000 )) ;;
@@ -74,7 +75,14 @@ function unknown-option # {{{
   exit 1
 } # }}}
 
-function assert-owned-by # {{{
+function assert-presence # {{{
+{
+  declare -r t=$1 arg=$2 ovar=$3
+  zstat -oLH $ovar $arg 2>/dev/null || fail -x $t $arg does not exist
+  itsa $t "${(@Pkv)ovar}" || fail --detect $arg "${(@Pkv)ovar}"
+} # }}}
+
+function assert-path-owned-by # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
@@ -83,7 +91,7 @@ function assert-owned-by # {{{
   || fail $t $arg is owned by $(getpwent -qn $st[uid]), not $A
 } # }}}
 
-function assert-in-group # {{{
+function assert-path-in-group # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
@@ -92,11 +100,103 @@ function assert-in-group # {{{
   || fail $t $arg is in group $(getgrent -qn $st[gid]), not $A
 } # }}}
 
-function assert-mode # {{{
+function assert-path-mode # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
   declare -i 8 mode=$((st[mode] & ~8#170000))
   :; (( mode == A )) \
   || fail $t $arg has mode $mode, not $A
+} # }}}
+
+function assert-dir-empty # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  (( st[size] < 3 )) \
+  || fail $t $arg is not empty
+} # }}}
+
+function assert-dir-non-empty # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  (( st[size] > 2 )) \
+  || fail $t $arg is empty
+} # }}}
+
+function assert-file-empty # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  (( st[size] == 0 )) \
+  || fail $t $arg is not empty
+} # }}}
+
+function assert-file-non-empty # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  (( st[size] != 0 )) \
+  || fail $t $arg is empty
+} # }}}
+
+function assert-symlink-to # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; st="${(@)@[4,$#]}"
+  :; [[ $st[link] == $A ]] \
+  || fail $t $arg points to $st[link]
+} # }}}
+
+function assert-group-not-password-protected # {{{
+{
+  declare -r t=$1 arg=$2
+  : \
+  || fail $t $arg has a password
+} # }}}
+
+function assert-group-password-protected # {{{
+{
+  declare -r t=$1 arg=$2
+  : \
+  || fail $t $arg has no password
+} # }}}
+
+function assert-group-with-member # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  : \
+  || fail user $arg is not in $t "$A"
+} # }}}
+
+function assert-user-at-home-in # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare h=$(getpwent -qd $arg)
+  :; [[ $h == $A ]] \
+  || fail $t $arg is at home in $h
+} # }}}
+
+function assert-user-in-group # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  :; getgrent -qt $arg "$A" \
+  || fail $t $arg is not in group $A
+} # }}}
+
+function assert-netif-down # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -a ifaces; ifaces=($(ifconfig -ld || :))
+  [[ -n ${(M)ifaces:#$arg} ]] \
+  || fail $t $arg is not down
+} # }}}
+
+function assert-netif-up # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -a ifaces; ifaces=($(ifconfig -lu || :))
+  [[ -n ${(M)ifaces:#$arg} ]] \
+  || fail $t $arg is not up
 } # }}}

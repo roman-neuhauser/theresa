@@ -1,4 +1,5 @@
 #!@ZSH@ -f
+# vim: sw=2 sts=2 et fdm=marker cms=\ #\ %s
 
 declare -gr SELF="${0##*/}"
 
@@ -26,15 +27,9 @@ while haveopt I N A \
   -- "$@"
 do
   case $N in
-  down)
-    ifaces=($(ifconfig -ld || :))
-    [[ -n ${(M)ifaces:#$arg} ]] \
-    || fail $t $arg is not down
-  ;;
-  up)
-    ifaces=($(ifconfig -lu || :))
-    [[ -n ${(M)ifaces:#$arg} ]] \
-    || fail $t $arg is not up
+  ( down \
+  | up )
+    assert-netif-$N $t $arg "${A-}"
   ;;
   *)
     unknown-option $t $arg "$I" "$N" "$A"
