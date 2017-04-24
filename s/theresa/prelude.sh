@@ -15,7 +15,7 @@ setopt warn_create_global
 
 declare -gi FAILURES
 
-function fail
+function fail # {{{
 {
   local ex=0
   case $1 in
@@ -41,9 +41,9 @@ function fail
   printf -->&2 "FAIL: %s\n" "$*"
   FAILURES=$(( FAILURES + 1 ))
   (( ex == 0 )) || exit 1
-}
+} # }}}
 
-function itsa
+function itsa # {{{
 {
   local t=$1; shift
   local -A st; st=("$@")
@@ -61,7 +61,7 @@ function itsa
     printf -->&2 "ERROR: $0: unknown object type %s\n" "${(qq)t}"
   ;;
   esac
-}
+} # }}}
 
 function unknown-option # {{{
 {
