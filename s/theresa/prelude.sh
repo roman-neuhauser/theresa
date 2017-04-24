@@ -62,6 +62,18 @@ function itsa
   esac
 }
 
+function unknown-option # {{{
+{
+  declare -r t=$1 arg=$2 A=$5
+  declare a=
+  case $A in
+  ?) a=-$A ;;
+  *) a=--$A ;;
+  esac
+  printf -->&2 "%s: ERROR: unknown option %s\n" "$SELF" "${(qq)a-}"
+  exit 1
+} # }}}
+
 function assert-owned-by # {{{
 {
   declare -r t=$1 arg=$2 A=$3

@@ -1,5 +1,7 @@
 #!@ZSH@ -f
 
+declare -gr SELF="${0##*/}"
+
 declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
@@ -34,7 +36,9 @@ do
     : \
     || fail user $arg is not in $t "$A"
   ;;
-  *) echo "I=$I N=$N A=${A-}" ;;
+  *)
+    unknown-option $t $arg "$I" "$N" "$A"
+  ;;
   esac
 done
 

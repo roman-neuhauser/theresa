@@ -3,6 +3,13 @@
   $ . $TESTDIR/setup
 
 
+unknown option::
+
+  $ theresa chardev /dev/null --omg
+  theresa-chardev: ERROR: unknown option '--omg'
+  [1]
+
+
 ::
 
   $ theresa chardev /dev/null
