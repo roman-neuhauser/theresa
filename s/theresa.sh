@@ -16,8 +16,13 @@ usage() # {{{
     printf -->&2 'theresa: error: missing operand\n'
   ;;
   option)
+    declare on="${2:?}"
+    case $on in
+    ?) on=-$on ;;
+    *) on=--$on ;;
+    esac
     ex=1
-    printf -->&2 'theresa: error: unknown option %s\n' "${2:?}"
+    printf -->&2 'theresa: error: unknown option %s\n' "$on"
   ;;
   esac
   printf -->&2 'theresa: usage: %s -h\n' "$SELF"
@@ -43,7 +48,7 @@ help_wanted=0
 while haveopt I N A h help -- "$@"; do
 case "$N" in
   h|help) help_wanted=$(expr $help_wanted + 1) ;;
-  \?) usage option "-$A" ;;
+  \?) usage option "$A" ;;
   *)
     printf -->&2 "theresa: BUG: unhandled option '%s'\n" "$N"
     exit 127
