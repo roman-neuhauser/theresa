@@ -13,27 +13,11 @@ done; shift $I
 
 arg="${1?}"; shift
 
-declare -r t=group
-
-getgrent -q $arg || fail $t $arg does not exist
-
-I=
-N=
-A=
-while haveopt I N A \
-  {,not-}password-protected with-member= \
+handle-predicates group $arg \
+  not-password-protected \
+    assert-group-not-password-protected \
+  password-protected \
+    assert-group-password-protected \
+  with-member= \
+    assert-group-with-member \
   -- "$@"
-do
-  case $N in
-  ( not-password-protected \
-  | password-protected \
-  | with-member )
-    assert-group-$N $t $arg "${A-}"
-  ;;
-  *)
-    unknown-option $t $arg "$I" "$N" "$A"
-  ;;
-  esac
-done
-
-exit $(( FAILURES != 0 ))

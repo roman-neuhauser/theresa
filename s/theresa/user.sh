@@ -13,26 +13,7 @@ done; shift $I
 
 arg="${1?}"; shift
 
-declare -r t=user
-
-getpwent -q $arg || fail $t $arg does not exist
-
-I=
-N=
-A=
-while haveopt I N A \
-  at-home-in= in-group= \
+handle-predicates user $arg \
+  at-home-in= assert-user-at-home-in \
+  in-group=   assert-user-in-group \
   -- "$@"
-do
-  case $N in
-  ( at-home-in \
-  | in-group )
-    assert-user-$N $t $arg "${A-}"
-  ;;
-  *)
-    unknown-option $t $arg "$I" "$N" "$A"
-  ;;
-  esac
-done
-
-exit $(( FAILURES != 0 ))

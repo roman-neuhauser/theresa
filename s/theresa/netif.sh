@@ -13,28 +13,7 @@ done; shift $I
 
 arg="${1?}"; shift
 
-declare -r t=netif
-
-ifaces=($(ifconfig -l))
-[[ -n ${(M)ifaces:#$arg} ]] \
-|| fail $t $arg does not exist
-
-I=
-N=
-A=
-while haveopt I N A \
-  down up \
+handle-predicates netif $arg \
+  down assert-netif-down \
+  up   assert-netif-up \
   -- "$@"
-do
-  case $N in
-  ( down \
-  | up )
-    assert-netif-$N $t $arg "${A-}"
-  ;;
-  *)
-    unknown-option $t $arg "$I" "$N" "$A"
-  ;;
-  esac
-done
-
-exit $(( FAILURES != 0 ))

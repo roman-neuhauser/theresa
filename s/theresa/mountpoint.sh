@@ -15,30 +15,8 @@ done; shift $I
 
 arg="${1?}"; shift
 
-declare -r t=mountpoint
-
-declare -A st
-assert-presence $t $arg st
-# a hole
-fail -x directory $arg is not a $t
-
-I=
-N=
-A=
-while haveopt I N A \
-  empty non-empty owned-by= in-group= mode= \
+handle-predicates mountpoint $arg \
+  owned-by= assert-path-owned-by \
+  in-group= assert-path-iin-group \
+  mode=     assert-path-mode \
   -- "$@"
-do
-  case $N in
-  ( owned-by \
-  | in-group \
-  | mode )
-    assert-path-$N $t $arg "${A-}" "${(@kv)st}"
-  ;;
-  *)
-    unknown-option $t $arg "$I" "$N" "$A"
-  ;;
-  esac
-done
-
-exit $(( FAILURES != 0 ))

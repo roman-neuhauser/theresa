@@ -63,6 +63,38 @@ function itsa # {{{
   esac
 } # }}}
 
+function handle-predicates # {{{
+{
+  declare t=$1 arg=$2
+  shift 2
+  declare -i seppos="$@[(i)--]"
+  declare -A handlers; handlers=("${(@)@[1,seppos-1]}")
+  shift $seppos
+  declare k v
+  declare I=
+  declare N=
+  declare A=
+
+  declare -A st
+  assert-presence $t $arg st
+
+  while haveopt I N A \
+    "${(@k)handlers}" \
+    -- "$@"
+  do
+    case $N in
+    ${(~kj:|:)handlers/%=/})
+      ${handlers[$N=]-$handlers[$N]} $t $arg "${A-}" ${st+"${(@kv)st}"}
+    ;;
+    *)
+      unknown-option $t $arg "$I" "$N" "$A"
+    ;;
+    esac
+  done
+
+  return $(( FAILURES != 0 ))
+} # }}}
+
 function unknown-option # {{{
 {
   declare -r t=$1 arg=$2 A=$5
@@ -77,9 +109,15 @@ function unknown-option # {{{
 
 function assert-presence # {{{
 {
+  ${$(whence assert-$1-presence):-assert-path-presence} "$@"
+} # }}}
+
+function assert-path-presence # {{{
+{
   declare -r t=$1 arg=$2 ovar=$3
   zstat -oLH $ovar $arg 2>/dev/null || fail -x $t $arg does not exist
-  itsa $t "${(@Pkv)ovar}" || fail --detect $arg "${(@Pkv)ovar}"
+  :; itsa $t "${(@Pkv)ovar}" \
+  || fail --detect $arg "${(@Pkv)ovar}"
 } # }}}
 
 function assert-path-owned-by # {{{
@@ -113,7 +151,7 @@ function assert-dir-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
-  (( st[size] < 3 )) \
+  :; (( st[size] < 3 )) \
   || fail $t $arg is not empty
 } # }}}
 
@@ -121,7 +159,7 @@ function assert-dir-non-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
-  (( st[size] > 2 )) \
+  :; (( st[size] > 2 )) \
   || fail $t $arg is empty
 } # }}}
 
@@ -129,7 +167,7 @@ function assert-file-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
-  (( st[size] == 0 )) \
+  :; (( st[size] == 0 )) \
   || fail $t $arg is not empty
 } # }}}
 
@@ -137,8 +175,15 @@ function assert-file-non-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; st="${(@)@[4,$#]}"
-  (( st[size] != 0 )) \
+  :; (( st[size] != 0 )) \
   || fail $t $arg is empty
+} # }}}
+
+function assert-mountpoint-presence # {{{
+{
+  assert-path-presence "$@"
+  # a hole
+  fail -x directory $arg is not a $t
 } # }}}
 
 function assert-symlink-to # {{{
@@ -147,6 +192,12 @@ function assert-symlink-to # {{{
   declare -A st; st="${(@)@[4,$#]}"
   :; [[ $st[link] == $A ]] \
   || fail $t $arg points to $st[link]
+} # }}}
+
+function assert-group-presence # {{{
+{
+  :; getgrent -q $arg \
+  || fail $t $arg does not exist
 } # }}}
 
 function assert-group-not-password-protected # {{{
@@ -170,6 +221,12 @@ function assert-group-with-member # {{{
   || fail user $arg is not in $t "$A"
 } # }}}
 
+function assert-user-presence # {{{
+{
+  :; getpwent -q $arg \
+  || fail $t $arg does not exist
+} # }}}
+
 function assert-user-at-home-in # {{{
 {
   declare -r t=$1 arg=$2 A=$3
@@ -185,11 +242,19 @@ function assert-user-in-group # {{{
   || fail $t $arg is not in group $A
 } # }}}
 
+function assert-netif-presence # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -a ifaces; ifaces=($(ifconfig -l))
+  :; [[ -n ${(M)ifaces:#$arg} ]] \
+  || fail $t $arg does not exist
+} # }}}
+
 function assert-netif-down # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -a ifaces; ifaces=($(ifconfig -ld || :))
-  [[ -n ${(M)ifaces:#$arg} ]] \
+  :; [[ -n ${(M)ifaces:#$arg} ]] \
   || fail $t $arg is not down
 } # }}}
 
@@ -197,6 +262,6 @@ function assert-netif-up # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -a ifaces; ifaces=($(ifconfig -lu || :))
-  [[ -n ${(M)ifaces:#$arg} ]] \
+  :; [[ -n ${(M)ifaces:#$arg} ]] \
   || fail $t $arg is not up
 } # }}}
