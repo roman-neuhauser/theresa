@@ -63,6 +63,32 @@ function itsa # {{{
   esac
 } # }}}
 
+function cmd-impl # {{{
+{
+  declare -r t=$1; shift
+  declare -i oi seppos="$@[(i)--]"
+  declare -A handlers
+  handlers=("$@[1,seppos-1]")
+  shift $seppos
+
+  handle-options $t oi "$@"
+  shift $oi
+
+  handle-predicates $t $1 ${(kv)handlers} -- "$@[2,-1]"
+} # }}}
+
+function handle-options # {{{
+{
+  declare t=$1 i=$2 N A
+  shift 2
+  while haveopt $i N A h help -- "$@"; do
+    case $N in
+    h|help) echo HELP; exit ;;
+    *) unknown-option blockdev '' ${(P)i} $N $A ;;
+    esac
+  done
+} # }}}
+
 function handle-predicates # {{{
 {
   declare t=$1 arg=$2
@@ -114,16 +140,19 @@ function assert-presence # {{{
 
 function assert-path-presence # {{{
 {
+  zmodload -F zsh/stat b:zstat
+
   declare -r t=$1 arg=$2 ovar=$3
-  zstat -oLH $ovar $arg 2>/dev/null || fail -x $t $arg does not exist
-  :; itsa $t "${(@Pkv)ovar}" \
-  || fail --detect $arg "${(@Pkv)ovar}"
+  declare -A st
+  zstat -oLH st $arg 2>/dev/null || fail -x $t $arg does not exist
+  :; itsa $t "${(@kv)st}" \
+  || fail --detect $arg "${(@kv)st}"
 } # }}}
 
 function assert-path-owned-by # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   declare uid=$(getpwent -qu $A || :)
   :; [[ $st[uid] == $uid ]] \
   || fail $t $arg is owned by $(getpwent -qn $st[uid]), not $A
@@ -132,7 +161,7 @@ function assert-path-owned-by # {{{
 function assert-path-in-group # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   declare gid=$(getgrent -qg $A || :)
   :; [[ $st[gid] == $gid ]] \
   || fail $t $arg is in group $(getgrent -qn $st[gid]), not $A
@@ -141,7 +170,7 @@ function assert-path-in-group # {{{
 function assert-path-mode # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   declare -i 8 mode=$((st[mode] & ~8#170000))
   :; (( mode == A )) \
   || fail $t $arg has mode $mode, not $A
@@ -150,7 +179,7 @@ function assert-path-mode # {{{
 function assert-dir-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   :; (( st[size] < 3 )) \
   || fail $t $arg is not empty
 } # }}}
@@ -158,7 +187,7 @@ function assert-dir-empty # {{{
 function assert-dir-non-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   :; (( st[size] > 2 )) \
   || fail $t $arg is empty
 } # }}}
@@ -166,7 +195,7 @@ function assert-dir-non-empty # {{{
 function assert-file-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   :; (( st[size] == 0 )) \
   || fail $t $arg is not empty
 } # }}}
@@ -174,7 +203,7 @@ function assert-file-empty # {{{
 function assert-file-non-empty # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   :; (( st[size] != 0 )) \
   || fail $t $arg is empty
 } # }}}
@@ -189,7 +218,7 @@ function assert-mountpoint-presence # {{{
 function assert-symlink-to # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare -A st; st="${(@)@[4,$#]}"
+  declare -A st; zstat -oLH st $arg
   :; [[ $st[link] == $A ]] \
   || fail $t $arg points to $st[link]
 } # }}}

@@ -7,13 +7,7 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
-while haveopt I N A h help -- "$@"; do
-  :
-done; shift $I
-
-arg="${1?}"; shift
-
-handle-predicates group $arg \
+cmd-impl group \
   not-password-protected \
     assert-group-not-password-protected \
   password-protected \

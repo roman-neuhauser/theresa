@@ -7,13 +7,7 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
-while haveopt I N A h help -- "$@"; do
-  :
-done; shift $I
-
-arg="${1?}"; shift
-
-handle-predicates netif $arg \
+cmd-impl netif \
   down assert-netif-down \
   up   assert-netif-up \
   -- "$@"

@@ -7,15 +7,7 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
-zmodload -F zsh/stat b:zstat
-
-while haveopt I N A h help -- "$@"; do
-  :
-done; shift $I
-
-arg="${1?}"; shift
-
-handle-predicates mountpoint $arg \
+cmd-impl mountpoint \
   owned-by= assert-path-owned-by \
   in-group= assert-path-iin-group \
   mode=     assert-path-mode \
