@@ -12,12 +12,6 @@
   $ fake -x 1 getpwent -qu nobody
 
 
-unknown option::
-
-  $ theresa blockdev fubar --omg
-  theresa-blockdev: ERROR: unknown option '--omg'
-  [1]
-
 ::
 
   $ theresa blockdev fubar

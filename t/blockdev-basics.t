@@ -9,6 +9,14 @@ unknown option::
   theresa-blockdev: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa blockdev fubar --omg
+  theresa-blockdev: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa blockdev -h

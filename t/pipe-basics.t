@@ -9,6 +9,14 @@ unknown option::
   theresa-pipe: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa pipe fubar --omg
+  theresa-pipe: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa pipe -h

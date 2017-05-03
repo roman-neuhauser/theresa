@@ -9,6 +9,14 @@ unknown option::
   theresa-user: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa user fubar --omg
+  theresa-user: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa user -h

@@ -9,6 +9,14 @@ unknown option::
   theresa-file: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa file fubar --omg
+  theresa-file: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa file -h

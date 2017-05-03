@@ -9,6 +9,14 @@ unknown option::
   theresa-group: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa group fubar --omg
+  theresa-group: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa group -h

@@ -134,19 +134,22 @@ function handle-predicates # {{{
   declare N=
   declare A=
 
+  I=0 N= A=
+  while haveopt I N A "${(@k)handlers}" -- "$@"; do
+    case $N in
+    ${(~kj:|:)handlers/%=/}) : ;;
+    *) unknown-option $t $arg "$I" "$N" "$A" ;;
+    esac
+  done
+
   declare -A st
   assert-presence $t $arg st
 
-  while haveopt I N A \
-    "${(@k)handlers}" \
-    -- "$@"
-  do
+  I=0 N= A=
+  while haveopt I N A "${(@k)handlers}" -- "$@"; do
     case $N in
     ${(~kj:|:)handlers/%=/})
       ${handlers[$N=]-$handlers[$N]} $t $arg "${A-}" ${st+"${(@kv)st}"}
-    ;;
-    *)
-      unknown-option $t $arg "$I" "$N" "$A"
     ;;
     esac
   done

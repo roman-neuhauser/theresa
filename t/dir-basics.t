@@ -9,6 +9,14 @@ unknown option::
   theresa-dir: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa dir fubar --omg
+  theresa-dir: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa dir -h

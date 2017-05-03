@@ -9,6 +9,14 @@ unknown option::
   theresa-mountpoint: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa mountpoint fubar --omg
+  theresa-mountpoint: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa mountpoint -h

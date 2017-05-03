@@ -9,6 +9,14 @@ unknown option::
   theresa-netif: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa netif fubar --omg
+  theresa-netif: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa netif -h

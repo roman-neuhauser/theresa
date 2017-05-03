@@ -9,6 +9,14 @@ unknown option::
   theresa-chardev: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa chardev fubar --omg
+  theresa-chardev: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa chardev -h

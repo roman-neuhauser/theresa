@@ -7,15 +7,6 @@
   $ fake -x 1 getpwent -qu rofl
 
 
-unknown option::
-
-  $ mkzstat -oLH st . -- mode 040755
-
-  $ theresa dir . --omg
-  theresa-dir: ERROR: unknown option '--omg'
-  [1]
-
-
 does it exist at all? ::
 
   $ mkzstat -oLH st snafu -- -x 1

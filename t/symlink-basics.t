@@ -9,6 +9,14 @@ unknown option::
   theresa-symlink: ERROR: unknown option '--omg'
   [1]
 
+
+unknown predicate::
+
+  $ theresa symlink fubar --omg
+  theresa-symlink: ERROR: unknown option '--omg'
+  [1]
+
+
 help::
 
   $ theresa symlink -h
