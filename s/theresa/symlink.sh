@@ -7,6 +7,14 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
+function assert-symlink-to # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; zstat -oLH st $arg
+  :; [[ $st[link] == $A ]] \
+  || fail $t $arg points to $st[link]
+} # }}}
+
 cmd-impl symlink \
   --meta=PATHNAME \
   owned-by=USER  assert-path-owned-by \

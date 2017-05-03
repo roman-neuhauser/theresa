@@ -7,6 +7,22 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
+function assert-dir-empty # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; zstat -oLH st $arg
+  :; (( st[size] < 3 )) \
+  || fail $t $arg is not empty
+} # }}}
+
+function assert-dir-non-empty # {{{
+{
+  declare -r t=$1 arg=$2 A=$3
+  declare -A st; zstat -oLH st $arg
+  :; (( st[size] > 2 )) \
+  || fail $t $arg is empty
+} # }}}
+
 cmd-impl directory \
   --meta=PATHNAME \
   empty           assert-dir-empty \
