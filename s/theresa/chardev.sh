@@ -7,9 +7,8 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
-declare -gr SYNOPSIS_SYMBOL=PATHNAME
-
 cmd-impl chardev \
+  --meta=PATHNAME \
   in-group=GROUP  assert-path-in-group \
   mode=PERMS      assert-path-mode \
   owned-by=USER   assert-path-owned-by \

@@ -66,6 +66,16 @@ function itsa # {{{
 function cmd-impl # {{{
 {
   declare -r t=$1; shift
+  declare meta=
+
+  declare I=0 N= A=
+  while haveopt I N A meta= -- "$@"; do
+    case $N in
+    meta) meta=$A ;;
+    *) unknown-option $t '' $I $N $A ;;
+    esac
+  done; shift $I
+
   declare -i seppos="$@[(i)--]"
   declare k v
   declare -A handlers
@@ -76,12 +86,12 @@ function cmd-impl # {{{
   done
   shift $seppos
 
-  declare I N A
+  declare I=0 N= A=
   while haveopt I N A h help -- "$@"; do
     case $N in
     help) echo HELP; exit ;;
-    h) cmd-usage $specs; exit ;;
-    *) unknown-option blockdev '' $I $N $A ;;
+    h) cmd-usage "$meta" $specs; exit ;;
+    *) unknown-option $t '' $I $N $A ;;
     esac
   done; shift $I
 
@@ -90,7 +100,7 @@ function cmd-impl # {{{
 
 function cmd-usage # {{{
 {
-  declare -r self=${SELF/-/ } sym=${SYNOPSIS_SYMBOL:-NAME}
+  declare -r self=${SELF/-/ } sym=${1:-NAME}; shift
   cat <<EOF
 ${self/ */}: usage: $self -h|--help
 ${self/ */}: usage: $self $sym [PREDICATE...]

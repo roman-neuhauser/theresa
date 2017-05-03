@@ -7,9 +7,8 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
-declare -gr SYNOPSIS_SYMBOL=PATHNAME
-
 cmd-impl directory \
+  --meta=PATHNAME \
   empty           assert-dir-empty \
   non-empty       assert-dir-non-empty \
   in-group=GROUP  assert-path-in-group \
