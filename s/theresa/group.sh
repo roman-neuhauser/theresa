@@ -12,6 +12,6 @@ cmd-impl group \
     assert-group-not-password-protected \
   password-protected \
     assert-group-password-protected \
-  with-member= \
+  with-member=USER \
     assert-group-with-member \
   -- "$@"

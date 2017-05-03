@@ -7,10 +7,12 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
+declare -gr SYNOPSIS_SYMBOL=PATHNAME
+
 cmd-impl directory \
-  empty assert-dir-empty \
-  non-empty assert-dir-non-empty \
-  owned-by= assert-path-owned-by \
-  in-group= assert-path-in-group \
-  mode=     assert-path-mode \
+  empty           assert-dir-empty \
+  non-empty       assert-dir-non-empty \
+  in-group=GROUP  assert-path-in-group \
+  mode=PERMS      assert-path-mode \
+  owned-by=USER   assert-path-owned-by \
   -- "$@"

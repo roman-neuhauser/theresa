@@ -7,8 +7,10 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 
 . $preludedir/prelude || exit 2
 
+declare -gr SYNOPSIS_SYMBOL=PATHNAME
+
 cmd-impl blockdev \
-  owned-by= assert-path-owned-by \
-  in-group= assert-path-in-group \
-  mode=     assert-path-mode \
+  in-group=GROUP  assert-path-in-group \
+  mode=PERMS      assert-path-mode \
+  owned-by=USER   assert-path-owned-by \
   -- "$@"

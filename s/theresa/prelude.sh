@@ -66,25 +66,47 @@ function itsa # {{{
 function cmd-impl # {{{
 {
   declare -r t=$1; shift
-  declare -i oi seppos="$@[(i)--]"
+  declare -i seppos="$@[(i)--]"
+  declare k v
   declare -A handlers
-  handlers=("$@[1,seppos-1]")
+  declare -a specs
+  for k v in "$@[1,seppos-1]"; do
+    specs+=($k)
+    handlers+=(${k/=*/=} $v)
+  done
   shift $seppos
 
-  handle-options $t oi "$@"
-  shift $oi
+  declare I N A
+  while haveopt I N A h help -- "$@"; do
+    case $N in
+    help) echo HELP; exit ;;
+    h) cmd-usage $specs; exit ;;
+    *) unknown-option blockdev '' $I $N $A ;;
+    esac
+  done; shift $I
 
   handle-predicates $t $1 ${(kv)handlers} -- "$@[2,-1]"
 } # }}}
 
-function handle-options # {{{
+function cmd-usage # {{{
 {
-  declare t=$1 i=$2 N A
-  shift 2
-  while haveopt $i N A h help -- "$@"; do
-    case $N in
-    h|help) echo HELP; exit ;;
-    *) unknown-option blockdev '' ${(P)i} $N $A ;;
+  declare -r self=${SELF/-/ } sym=${SYNOPSIS_SYMBOL:-NAME}
+  cat <<EOF
+${self/ */}: usage: $self -h|--help
+${self/ */}: usage: $self $sym [PREDICATE...]
+
+Options:
+
+  -h        Display this message.
+
+Predicates:
+
+EOF
+  declare on oa
+  for on in "${(@o)@}"; do
+    case $on in
+    *=?*) printf -- "  --%-8s %s\n" ${(s:=:)on} ;;
+    *)    printf -- "  --%s\n" ${on/%=} ;;
     esac
   done
 } # }}}
@@ -94,7 +116,8 @@ function handle-predicates # {{{
   declare t=$1 arg=$2
   shift 2
   declare -i seppos="$@[(i)--]"
-  declare -A handlers; handlers=("${(@)@[1,seppos-1]}")
+  declare -A handlers
+  handlers=("$@[1,seppos-1]")
   shift $seppos
   declare k v
   declare I=

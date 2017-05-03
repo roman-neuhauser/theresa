@@ -8,6 +8,6 @@ declare -gr preludedir="${THERESA_PRELUDEDIR:-@preludedir@}"
 . $preludedir/prelude || exit 2
 
 cmd-impl user \
-  at-home-in= assert-user-at-home-in \
-  in-group=   assert-user-in-group \
+  at-home-in=PATHNAME assert-user-at-home-in \
+  in-group=GROUP      assert-user-in-group \
   -- "$@"
