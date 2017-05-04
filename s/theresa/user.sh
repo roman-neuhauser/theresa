@@ -17,7 +17,7 @@ function assert-user-presence # {{{
 function assert-user-at-home-in # {{{
 {
   declare -r t=$1 arg=$2 A=$3
-  declare h=$(getpwent -qd $arg)
+  declare h=$(getpwent -Nqd $arg)
   :; [[ $h == $A ]] \
   || fail $t $arg is at home in $h
 } # }}}

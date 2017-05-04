@@ -4,9 +4,9 @@
 
   $ export fake_zstat=1
 
-  $ echo 200 | fake -o getpwent -qu somebody
-  $ echo 100 | fake -o getpwent -qu nobody
-  $ echo nobody | fake -o getpwent -qn 100
+  $ echo 200 | fake -o getpwent -Nqu somebody
+  $ echo 100 | fake -o getpwent -Nqu nobody
+  $ echo nobody | fake -o getpwent -Nqn 100
 
   $ fake -x 1 getgrent -qg everybody
   $ echo 111 | fake -o getgrent -qg empty

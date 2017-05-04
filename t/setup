@@ -4,8 +4,8 @@ export THERESA_PRELUDEDIR="$TESTDIR"
 export FAKE_BINDIR="$PWD"
 export PATH="$FAKE_BINDIR:$PATH"
 
-echo 0 | fake -o getpwent -qu root
-echo root | fake -o getpwent -qn 0
+echo 0 | fake -o getpwent -Nqu root
+echo root | fake -o getpwent -Nqn 0
 
 echo 0 | fake -o getgrent -qg wheel
 echo wheel | fake -o getgrent -qn 0

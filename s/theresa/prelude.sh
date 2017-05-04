@@ -189,9 +189,9 @@ function assert-path-owned-by # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; zstat -oLH st $arg
-  declare uid=$(getpwent -qu $A || :)
+  declare uid=$(getpwent -Nqu $A || :)
   :; [[ $st[uid] == $uid ]] \
-  || fail $t $arg is owned by $(getpwent -qn $st[uid]), not $A
+  || fail $t $arg is owned by $(getpwent -Nqn $st[uid]), not $A
 } # }}}
 
 function assert-path-in-group # {{{

@@ -9,7 +9,7 @@
   $ mkzstat -oLH st lol -- mode 020644
   $ mkzstat -oLH st . -- mode 040755
 
-  $ fake -x 1 getpwent -qu nobody
+  $ fake -x 1 getpwent -Nqu nobody
 
 
 ::

@@ -4,10 +4,10 @@
 
   $ export fake_zstat=1
 
-  $ fake -x 1 getpwent -qu whoever
+  $ fake -x 1 getpwent -Nqu whoever
 
-  $ echo thatguy | fake -o getpwent -qn 234
-  $ echo 234 | fake -o getpwent -qu thatguy
+  $ echo thatguy | fake -o getpwent -Nqn 234
+  $ echo 234 | fake -o getpwent -Nqu thatguy
 
   $ fake -x 1 getgrent -qg people
 

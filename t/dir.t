@@ -4,7 +4,7 @@
 
   $ export fake_zstat=1
 
-  $ fake -x 1 getpwent -qu rofl
+  $ fake -x 1 getpwent -Nqu rofl
 
 
 does it exist at all? ::
@@ -43,8 +43,8 @@ is it empty? ::
 
 what about permissions? ::
 
-  $ echo 69 | fake -vo getpwent -qu lmao
-  $ echo lmao | fake -vo getpwent -qn 69
+  $ echo 69 | fake -vo getpwent -Nqu lmao
+  $ echo lmao | fake -vo getpwent -Nqn 69
 
   $ echo 42 | fake -vo getgrent -qg omgwtf
   $ echo omgwtf | fake -vo getgrent -qn 42

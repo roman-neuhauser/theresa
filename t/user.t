@@ -17,7 +17,7 @@ does it exist at all? ::
 where is its home at? ::
 
   $ fake -x 0 getpwent -q fubar
-  $ echo /some/where | fake -o getpwent -qd fubar
+  $ echo /some/where | fake -o getpwent -Nqd fubar
 
   $ theresa user fubar --at-home-in /some/where
 
