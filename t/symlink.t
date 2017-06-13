@@ -6,11 +6,11 @@
 
   $ echo 200 | fake -o getpwent -Nqu somebody
   $ echo 100 | fake -o getpwent -Nqu nobody
-  $ echo nobody | fake -o getpwent -Nqn 100
+  $ echo nobody | fake -o getpwent -INqn 100
 
   $ fake -x 1 getgrent -Nqg everybody
   $ echo 111 | fake -o getgrent -Nqg empty
-  $ echo empty | fake -o getgrent -Nqn 111
+  $ echo empty | fake -o getgrent -INqn 111
 
 
 does it exist at all? ::

@@ -191,7 +191,7 @@ function assert-path-owned-by # {{{
   declare -A st; zstat -oLH st $arg
   declare uid=$(getpwent -Nqu $A || :)
   :; [[ $st[uid] == $uid ]] \
-  || fail $t $arg is owned by $(getpwent -Nqn $st[uid]), not $A
+  || fail $t $arg is owned by $(getpwent -INqn $st[uid]), not $A
 } # }}}
 
 function assert-path-in-group # {{{
@@ -200,7 +200,7 @@ function assert-path-in-group # {{{
   declare -A st; zstat -oLH st $arg
   declare gid=$(getgrent -Nqg $A || :)
   :; [[ $st[gid] == $gid ]] \
-  || fail $t $arg is in group $(getgrent -Nqn $st[gid]), not $A
+  || fail $t $arg is in group $(getgrent -INqn $st[gid]), not $A
 } # }}}
 
 function assert-path-mode # {{{

@@ -6,13 +6,13 @@
 
   $ fake -x 1 getpwent -Nqu whoever
 
-  $ echo thatguy | fake -o getpwent -Nqn 234
+  $ echo thatguy | fake -o getpwent -INqn 234
   $ echo 234 | fake -o getpwent -Nqu thatguy
 
   $ fake -x 1 getgrent -Nqg people
 
   $ echo 345 | fake -o getgrent -Nqg thoseguys
-  $ echo thoseguys | fake -o getgrent -Nqn 345
+  $ echo thoseguys | fake -o getgrent -INqn 345
 
 
 does it exist at all? ::

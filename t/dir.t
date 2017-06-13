@@ -44,10 +44,10 @@ is it empty? ::
 what about permissions? ::
 
   $ echo 69 | fake -vo getpwent -Nqu lmao
-  $ echo lmao | fake -vo getpwent -Nqn 69
+  $ echo lmao | fake -vo getpwent -INqn 69
 
   $ echo 42 | fake -vo getgrent -Nqg omgwtf
-  $ echo omgwtf | fake -vo getgrent -Nqn 42
+  $ echo omgwtf | fake -vo getgrent -INqn 42
 
   $ mkzstat -oLH st snafu \
   > -- uid 69 gid 42 mode 040710 size 3

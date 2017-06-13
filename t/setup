@@ -5,10 +5,10 @@ export FAKE_BINDIR="$PWD"
 export PATH="$FAKE_BINDIR:$PATH"
 
 echo 0 | fake -o getpwent -Nqu root
-echo root | fake -o getpwent -Nqn 0
+echo root | fake -o getpwent -INqn 0
 
 echo 0 | fake -o getgrent -Nqg wheel
-echo wheel | fake -o getgrent -Nqn 0
+echo wheel | fake -o getgrent -INqn 0
 
 mkzstat()
 {
