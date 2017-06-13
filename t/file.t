@@ -9,10 +9,10 @@
   $ echo thatguy | fake -o getpwent -Nqn 234
   $ echo 234 | fake -o getpwent -Nqu thatguy
 
-  $ fake -x 1 getgrent -qg people
+  $ fake -x 1 getgrent -Nqg people
 
-  $ echo 345 | fake -o getgrent -qg thoseguys
-  $ echo thoseguys | fake -o getgrent -qn 345
+  $ echo 345 | fake -o getgrent -Nqg thoseguys
+  $ echo thoseguys | fake -o getgrent -Nqn 345
 
 
 does it exist at all? ::

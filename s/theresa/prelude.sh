@@ -198,9 +198,9 @@ function assert-path-in-group # {{{
 {
   declare -r t=$1 arg=$2 A=$3
   declare -A st; zstat -oLH st $arg
-  declare gid=$(getgrent -qg $A || :)
+  declare gid=$(getgrent -Nqg $A || :)
   :; [[ $st[gid] == $gid ]] \
-  || fail $t $arg is in group $(getgrent -qn $st[gid]), not $A
+  || fail $t $arg is in group $(getgrent -Nqn $st[gid]), not $A
 } # }}}
 
 function assert-path-mode # {{{

@@ -9,9 +9,9 @@
   $ echo thatguy | fake -o getpwent -Nqn 234
   $ echo 234 | fake -o getpwent -Nqu thatguy
 
-  $ fake -x 1 getgrent -qg pipeless
-  $ echo 345 | fake -o getgrent -qg thoseguys
-  $ echo thoseguys | fake -o getgrent -qn 345
+  $ fake -x 1 getgrent -Nqg pipeless
+  $ echo 345 | fake -o getgrent -Nqg thoseguys
+  $ echo thoseguys | fake -o getgrent -Nqn 345
 
 
 does it exist at all? ::

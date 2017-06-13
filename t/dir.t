@@ -46,8 +46,8 @@ what about permissions? ::
   $ echo 69 | fake -vo getpwent -Nqu lmao
   $ echo lmao | fake -vo getpwent -Nqn 69
 
-  $ echo 42 | fake -vo getgrent -qg omgwtf
-  $ echo omgwtf | fake -vo getgrent -qn 42
+  $ echo 42 | fake -vo getgrent -Nqg omgwtf
+  $ echo omgwtf | fake -vo getgrent -Nqn 42
 
   $ mkzstat -oLH st snafu \
   > -- uid 69 gid 42 mode 040710 size 3
@@ -58,7 +58,7 @@ what about permissions? ::
 
   $ theresa dir snafu --owned-by lmao
 
-  $ fake -x 1 getgrent -qg noway
+  $ fake -x 1 getgrent -Nqg noway
 
   $ theresa dir snafu --in-group noway
   FAIL: directory snafu is in group omgwtf, not noway

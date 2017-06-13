@@ -8,9 +8,9 @@
   $ echo 100 | fake -o getpwent -Nqu nobody
   $ echo nobody | fake -o getpwent -Nqn 100
 
-  $ fake -x 1 getgrent -qg everybody
-  $ echo 111 | fake -o getgrent -qg empty
-  $ echo empty | fake -o getgrent -qn 111
+  $ fake -x 1 getgrent -Nqg everybody
+  $ echo 111 | fake -o getgrent -Nqg empty
+  $ echo empty | fake -o getgrent -Nqn 111
 
 
 does it exist at all? ::
